@@ -618,14 +618,19 @@ class Extractor(object):
                             1, '/' + dirr + '(/.*)? ' + c.split(" ")[1])
                         self.context.insert(
                             2, '/' + dirr + ' ' + c.split(" ")[1])
-                        self.context.insert(
-                            3, '/' + dirr + '/lost\+found' + ' ' + c.split(" ")[1])
+                        #self.context.insert(
+                        #    3, '/' + dirr + '/lost\+found' + ' ' + c.split(" ")[1])
+                        
+                        # Corrected line using a raw string for the regex part:
+                        self.context.insert(3, '/' + dirr + r'/lost\+found' + ' ' + c.split(" ")[1])
                         break
 
                 for c in self.context:
                     if re.search('/system/system/build..prop ', c):
-                        self.context.insert(
-                            3, '/lost\+found' + ' u:object_r:rootfs:s0')
+                        # Original line:
+                        # 3, '/lost\+found' + ' u:object_r:rootfs:s0')
+                        # Corrected line using a raw string:
+                        self.context.insert(3, r'/lost\+found' + ' u:object_r:rootfs:s0')
                         self.context.insert(
                             4, '/' + dirr + '/' + dirr + '(/.*)? ' + c.split(" ")[1])
                         break
