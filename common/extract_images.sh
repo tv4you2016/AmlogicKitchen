@@ -10,7 +10,7 @@ IMAGE_DIR="$1"
 OUTPUT_FOLDER="$2"
 
 partitions=(
-  system_a system_b system_dlkm_a system_dlkm_b system_ext_a vendor_a vendor_b vendor_dlkm_a vendor_dlkm_b product_a product_b odm_a odm_ext_a odm_dlkm_a oem_a
+  system_a system_dlkm_a system_ext_a vendor_a vendor_dlkm_a product_a odm_a odm_ext_a odm_dlkm_a oem_a
   system system_dlkm system_ext vendor vendor_dlkm product odm odm_ext odm_dlkm oem
 )
 
@@ -25,17 +25,20 @@ for IMAGE in "${partitions[@]}"; do
   SIZE=$(du -b "$IMAGE_FILE" | cut -f1)
   [[ "$SIZE" -lt 1024 ]] && continue
 
-  echo "Extracting $IMAGE"
+  #echo "Extracting $IMAGE"
   TYPE=$(bin/gettype -i "$IMAGE_FILE")
 
   if [[ "$TYPE" == "erofs" ]]; then
+    echo "Extracting EROFS image $IMAGE"
     bin/extract.erofs -i "$IMAGE_FILE" -x -o "$OUTPUT_FOLDER"
     du -b "$IMAGE_FILE" | cut -f1 > "level2/config/${IMAGE}_size.txt"
   elif [[ "$TYPE" == "sparse" ]]; then
+    echo "Extracting sparse image $IMAGE"
     simg2img "$IMAGE_FILE" "level2/${IMAGE}.raw.img"
     python3 bin/imgextractor.py "level2/${IMAGE}.raw.img" "$OUTPUT_FOLDER"
     rm -f "level2/${IMAGE}.raw.img"
   else
+    echo "Extracting python3 image $IMAGE"
     python3 bin/imgextractor.py "$IMAGE_FILE" "$OUTPUT_FOLDER"
   fi
 
