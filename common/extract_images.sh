@@ -10,7 +10,7 @@ IMAGE_DIR="$1"
 OUTPUT_FOLDER="$2"
 
 partitions=(
-  system_a system_dlkm_a system_ext_a vendor_a vendor_dlkm_a product_a odm_a odm_ext_a odm_dlkm_a oem_a
+  system_a system_b system_dlkm_a system_dlkm_b system_ext_a vendor_a vendor_b vendor_dlkm_a vendor_dlkm_b product_a product_b odm_a odm_ext_a odm_dlkm_a oem_a
   system system_dlkm system_ext vendor vendor_dlkm product odm odm_ext odm_dlkm oem
 )
 

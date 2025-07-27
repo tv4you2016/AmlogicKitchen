@@ -26,8 +26,8 @@ OUTPUT_IMG=${ARGS[3]}
 FS="level2/config/${PART}_fs_config"
 FC="level2/config/${PART}_file_contexts"
 TEMP_IMG="$(dirname "$OUTPUT_IMG")/temp_$(basename "$OUTPUT_IMG")"
-
-if [ "$(bin/gettype -i "$OUTPUT_IMG")" = "erofs" ]; then
+cp -a "$OUTPUT_IMG" "temp/$PART.bak"
+if [ "$(bin/gettype -i "$OUTPUT_IMG")" = "erofs1" ]; then
     bin/mkfs.erofs -zlz4hc --mount-point "/$PART" --fs-config-file "$FS" --file-contexts "$FC" "$TEMP_IMG" "level2/$PART"
 else
     FLAGS="-J -L $PART -T -1 -S $FC -C $FS -l $SIZE -a $PART"
